@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CollabBoard</title>
+    <link rel="stylesheet" href="css/styles.css" />
+  </head>
+  <body>
+    <header class="header">
+      <h1>CollabBoard</h1>
+      <span class="status">Offline mode</span>
+    </header>
+
+    <main class="workspace">
+      <div class="toolbar">
+        <button id="penBtn" class="active">Pen</button>
+        <button id="eraserBtn">Eraser</button>
+
+        <label for="colorPicker">Color</label>
+        <input type="color" id="colorPicker" value="#000000" />
+
+        <label for="brushSize">Size</label>
+        <input type="range" id="brushSize" min="1" max="30" value="3" />
+
+        <button id="clearBtn">Clear Canvas</button>
+      </div>
+
+      <div class="canvas-container">
+        <canvas id="whiteboard"></canvas>
+      </div>
+    </main>
+
+    <script src="js/canvas.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>
