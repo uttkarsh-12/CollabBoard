@@ -1,3 +1,18 @@
+/* =====================================
+   COLLABBOARD — MODERN WHITEBOARD UI
+===================================== */
+
+:root {
+  --primary: #6366f1;
+  --primary-dark: #4f46e5;
+  --bg: #f4f5f9;
+  --surface: #ffffff;
+  --border: #e5e7eb;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --shadow: 0 4px 20px rgba(15, 23, 42, 0.06);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,68 +20,379 @@
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background: #f1f5f9;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
 }
 
+/* HEADER */
+
 .header {
-  height: 65px;
-  background: #1e293b;
-  color: white;
+  height: 68px;
+  min-height: 68px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 25px;
+  padding: 0 28px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+  z-index: 5;
+}
+
+.header h1 {
+  font-size: 22px;
+  font-weight: 750;
+  letter-spacing: -0.8px;
+  color: var(--primary);
 }
 
 .status {
-  color: #86efac;
-  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 13px;
+  border-radius: 20px;
+  background: #fff7ed;
+  color: #c2410c;
+  font-size: 12px;
+  font-weight: 600;
 }
 
-.workspace {
-  padding: 20px;
+.status::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #f97316;
 }
+
+/* MAIN WORKSPACE */
+
+.workspace {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 22px 22px;
+  gap: 15px;
+}
+
+/* TOOLBAR */
 
 .toolbar {
   display: flex;
   align-items: center;
-  gap: 15px;
-  padding: 15px;
-  background: white;
-  border-radius: 8px 8px 0 0;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 13px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  z-index: 2;
 }
 
-button {
-  padding: 9px 16px;
-  border: 1px solid #cbd5e1;
-  border-radius: 5px;
+.toolbar button {
+  min-height: 36px;
+  padding: 8px 13px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #374151;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s ease;
+}
+
+.toolbar button:hover {
+  background: #eef2ff;
+  color: var(--primary-dark);
+  border-color: #c7d2fe;
+}
+
+.toolbar button:active {
+  transform: scale(0.96);
+}
+
+.toolbar button.active {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary);
+  box-shadow: 0 3px 8px rgba(99, 102, 241, 0.22);
+}
+
+.toolbar label {
+  margin-left: 5px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.toolbar input[type="color"] {
+  width: 34px;
+  height: 34px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
   background: white;
   cursor: pointer;
 }
 
-button:hover {
-  background: #e2e8f0;
+.toolbar input[type="range"] {
+  width: 85px;
+  accent-color: var(--primary);
+  cursor: pointer;
 }
 
-button.active {
-  background: #2563eb;
-  color: white;
+.toolbar #zoomLevel {
+  min-width: 43px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
 }
+
+/* DESTRUCTIVE ACTIONS */
+
+.toolbar #deleteBtn:hover,
+.toolbar #resetBoardBtn:hover {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.toolbar #clearBtn {
+  background: #fff7ed;
+  color: #c2410c;
+}
+
+.toolbar #clearBtn:hover {
+  background: #ffedd5;
+}
+
+/* CANVAS WORKSPACE */
 
 .canvas-container {
-  height: calc(100vh - 160px);
-  min-height: 350px;
-  background: white;
-  border: 1px solid #cbd5e1;
-  border-radius: 0 0 8px 8px;
+  position: relative;
+  flex: 1;
+  min-height: 250px;
   overflow: hidden;
+  border: 1px solid #dfe3eb;
+  border-radius: 15px;
+  background-color: #eef0f6;
+  background-image: radial-gradient(#cbd1df 1px, transparent 1px);
+  background-size: 22px 22px;
+  box-shadow: var(--shadow);
 }
+
+/* ACTUAL DRAWING CANVAS */
 
 #whiteboard {
   display: block;
   width: 100%;
   height: 100%;
-  background: white;
+  background: #ffffff;
+  cursor: crosshair;
   touch-action: none;
+}
+
+#whiteboard.panning {
+  cursor: grabbing;
+}
+
+/* ACCESSIBILITY */
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* RESPONSIVE DESIGN */
+
+@media (max-width: 900px) {
+  .workspace {
+    padding: 12px;
+  }
+
+  .toolbar {
+    gap: 6px;
+    padding: 10px;
+  }
+
+  .toolbar button {
+    padding: 7px 10px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 600px) {
+  .header {
+    height: 58px;
+    min-height: 58px;
+    padding: 0 15px;
+  }
+
+  .header h1 {
+    font-size: 19px;
+  }
+
+  .workspace {
+    padding: 9px;
+    gap: 9px;
+  }
+
+  .toolbar {
+    max-height: 190px;
+    overflow-y: auto;
+  }
+
+  .toolbar button {
+    min-height: 33px;
+    padding: 6px 9px;
+  }
+
+  .toolbar input[type="range"] {
+    width: 65px;
+  }
+
+  .canvas-container {
+    min-height: 200px;
+    border-radius: 10px;
+  }
+}
+
+/* =====================================
+   ICON TOOLBAR
+===================================== */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.board-name {
+  padding-left: 16px;
+  border-left: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.tool-group {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-right: 10px;
+  border-right: 1px solid var(--border);
+}
+
+.tool-group:last-child {
+  border-right: none;
+  padding-right: 0;
+}
+
+.toolbar .tool-btn {
+  width: 39px;
+  height: 39px;
+  min-height: 39px;
+  padding: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: transparent;
+  color: #475569;
+  cursor: pointer;
+}
+
+.tool-btn svg {
+  width: 19px;
+  height: 19px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.toolbar .tool-btn:hover {
+  background: #eef2ff;
+  color: var(--primary);
+  border-color: #e0e7ff;
+}
+
+.toolbar .tool-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.toolbar .danger-btn:hover {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.tool-setting {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 5px;
+}
+
+.tool-setting label {
+  margin: 0;
+  font-size: 11px;
+}
+
+#zoomLevel {
+  min-width: 42px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .toolbar {
+    max-height: 150px;
+    overflow-y: auto;
+  }
+
+  .tool-group {
+    border-right: none;
+    padding-right: 3px;
+  }
+}
+
+@media (max-width: 600px) {
+  .board-name {
+    display: none;
+  }
+
+  .toolbar .tool-btn {
+    width: 35px;
+    height: 35px;
+    min-height: 35px;
+  }
 }
